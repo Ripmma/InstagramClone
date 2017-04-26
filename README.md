@@ -1,1 +1,3 @@
-# InstagramClone.github.io
+# InstagramClone
+
+### Rene Pereyra & Luis Gomez
