@@ -1,4 +1,4 @@
-var bcrypt = require('bcryptjs');
+var bcrypt = require('bcrypt-nodejs');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 var express = require('express');
@@ -8,6 +8,19 @@ var mongoose = require('mongoose');
 var path = require('path');
 var request = require('request');
 
+var config = require('./config');
+var User = mongoose.model('User', new mongoose.Schema({
+  instagramId: { type: String, index: true },
+  email: { type: String, unique: true, lowercase: true },
+  password: { type: String, select: false },
+  username: String,
+  fullName: String,
+  picture: String,
+  accessToken: String
+}));
+
+mongoose.connect(config.db);
+
 var app = express();
 
 app.set('port', process.env.PORT || 3000);
@@ -16,6 +29,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+function createToken(user) {
+  var payload = {
+    exp: moment().add(14, 'days').unix(),
+    iat: moment().unix(),
+    sub: user._id
+  };
+
+  return jwt.encode(payload, config.tokenSecret);
+}
+
 app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
 });
+
