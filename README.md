@@ -1,3 +1,3 @@
 # InstagramClone
 
-### Rene Pereyra & Luis Gomez
+### Rene Pereyra & Moe Barry
