@@ -7,6 +7,14 @@ var moment = require('moment');
 var mongoose = require('mongoose');
 var path = require('path');
 var request = require('request');
+var compress = require('compression');
+
+app.set('port', process.env.PORT || 3000);
+app.use(compress());
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: 2628000000 }));
 
 var config = require('./config');
 var User = mongoose.model('User', new mongoose.Schema({
